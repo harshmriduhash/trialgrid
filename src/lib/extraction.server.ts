@@ -42,7 +42,7 @@ Hard rules:
 
 function stripCodeFence(raw: string): string {
   const fenced = raw.match(/```(?:json)?\s*([\s\S]*?)```/);
-  return (fenced ? fenced[1] : raw).trim();
+  return (fenced?.[1] ?? raw).trim();
 }
 
 async function callGateway(apiKey: string, documentText: string) {
