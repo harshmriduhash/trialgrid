@@ -34,12 +34,12 @@ function RequestDemo() {
     setError(null);
     const form = new FormData(event.currentTarget);
     const { error: insertError } = await supabase.from("pilot_requests").insert({
-      full_name: String(form.get("full_name") ?? ""),
+      name: String(form.get("full_name") ?? ""),
       email: String(form.get("email") ?? ""),
       institution: String(form.get("institution") ?? ""),
       role: String(form.get("role") ?? ""),
-      annual_studies: String(form.get("annual_studies") ?? ""),
-      notes: String(form.get("notes") ?? ""),
+      studies_per_year: String(form.get("annual_studies") ?? ""),
+      message: String(form.get("notes") ?? ""),
     });
     setBusy(false);
     if (insertError) {

@@ -14,6 +14,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as GlossaryRouteImport } from './routes/glossary'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as RequestDemoRouteImport } from './routes/request-demo'
 import { Route as SecurityComplianceRouteImport } from './routes/security-compliance'
 
 const IndexRoute = IndexRouteImport.update({
@@ -41,6 +42,11 @@ const PricingRoute = PricingRouteImport.update({
   path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RequestDemoRoute = RequestDemoRouteImport.update({
+  id: '/request-demo',
+  path: '/request-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SecurityComplianceRoute = SecurityComplianceRouteImport.update({
   id: '/security-compliance',
   path: '/security-compliance',
@@ -53,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/glossary': typeof GlossaryRoute
   '/how-it-works': typeof HowItWorksRoute
   '/pricing': typeof PricingRoute
+  '/request-demo': typeof RequestDemoRoute
   '/security-compliance': typeof SecurityComplianceRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/glossary': typeof GlossaryRoute
   '/how-it-works': typeof HowItWorksRoute
   '/pricing': typeof PricingRoute
+  '/request-demo': typeof RequestDemoRoute
   '/security-compliance': typeof SecurityComplianceRoute
 }
 export interface FileRoutesById {
@@ -70,6 +78,7 @@ export interface FileRoutesById {
   '/glossary': typeof GlossaryRoute
   '/how-it-works': typeof HowItWorksRoute
   '/pricing': typeof PricingRoute
+  '/request-demo': typeof RequestDemoRoute
   '/security-compliance': typeof SecurityComplianceRoute
 }
 export interface FileRouteTypes {
@@ -80,6 +89,7 @@ export interface FileRouteTypes {
     | '/glossary'
     | '/how-it-works'
     | '/pricing'
+    | '/request-demo'
     | '/security-compliance'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -88,6 +98,7 @@ export interface FileRouteTypes {
     | '/glossary'
     | '/how-it-works'
     | '/pricing'
+    | '/request-demo'
     | '/security-compliance'
   id:
     | '__root__'
@@ -96,6 +107,7 @@ export interface FileRouteTypes {
     | '/glossary'
     | '/how-it-works'
     | '/pricing'
+    | '/request-demo'
     | '/security-compliance'
   fileRoutesById: FileRoutesById
 }
@@ -105,6 +117,7 @@ export interface RootRouteChildren {
   GlossaryRoute: typeof GlossaryRoute
   HowItWorksRoute: typeof HowItWorksRoute
   PricingRoute: typeof PricingRoute
+  RequestDemoRoute: typeof RequestDemoRoute
   SecurityComplianceRoute: typeof SecurityComplianceRoute
 }
 
@@ -145,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/request-demo': {
+      id: '/request-demo'
+      path: '/request-demo'
+      fullPath: '/request-demo'
+      preLoaderRoute: typeof RequestDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/security-compliance': {
       id: '/security-compliance'
       path: '/security-compliance'
@@ -161,6 +181,7 @@ const rootRouteChildren: RootRouteChildren = {
   GlossaryRoute: GlossaryRoute,
   HowItWorksRoute: HowItWorksRoute,
   PricingRoute: PricingRoute,
+  RequestDemoRoute: RequestDemoRoute,
   SecurityComplianceRoute: SecurityComplianceRoute,
 }
 export const routeTree = rootRouteImport
