@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as GlossaryRouteImport } from './routes/glossary'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as PricingRouteImport } from './routes/pricing'
@@ -18,6 +19,11 @@ import { Route as SecurityComplianceRouteImport } from './routes/security-compli
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GlossaryRoute = GlossaryRouteImport.update({
@@ -43,6 +49,7 @@ const SecurityComplianceRoute = SecurityComplianceRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/glossary': typeof GlossaryRoute
   '/how-it-works': typeof HowItWorksRoute
   '/pricing': typeof PricingRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/glossary': typeof GlossaryRoute
   '/how-it-works': typeof HowItWorksRoute
   '/pricing': typeof PricingRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/glossary': typeof GlossaryRoute
   '/how-it-works': typeof HowItWorksRoute
   '/pricing': typeof PricingRoute
@@ -66,12 +75,24 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/glossary' | '/how-it-works' | '/pricing' | '/security-compliance'
+    | '/'
+    | '/auth'
+    | '/glossary'
+    | '/how-it-works'
+    | '/pricing'
+    | '/security-compliance'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/glossary' | '/how-it-works' | '/pricing' | '/security-compliance'
+  to:
+    | '/'
+    | '/auth'
+    | '/glossary'
+    | '/how-it-works'
+    | '/pricing'
+    | '/security-compliance'
   id:
     | '__root__'
     | '/'
+    | '/auth'
     | '/glossary'
     | '/how-it-works'
     | '/pricing'
@@ -80,6 +101,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   GlossaryRoute: typeof GlossaryRoute
   HowItWorksRoute: typeof HowItWorksRoute
   PricingRoute: typeof PricingRoute
@@ -93,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/glossary': {
@@ -128,6 +157,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   GlossaryRoute: GlossaryRoute,
   HowItWorksRoute: HowItWorksRoute,
   PricingRoute: PricingRoute,
