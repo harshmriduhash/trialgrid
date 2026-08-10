@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as SecurityComplianceRouteImport } from './routes/security-compliance'
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,6 +24,11 @@ const HowItWorksRoute = HowItWorksRouteImport.update({
   path: '/how-it-works',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SecurityComplianceRoute = SecurityComplianceRouteImport.update({
   id: '/security-compliance',
   path: '/security-compliance',
@@ -32,30 +38,34 @@ const SecurityComplianceRoute = SecurityComplianceRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/pricing': typeof PricingRoute
   '/security-compliance': typeof SecurityComplianceRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/pricing': typeof PricingRoute
   '/security-compliance': typeof SecurityComplianceRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/pricing': typeof PricingRoute
   '/security-compliance': typeof SecurityComplianceRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/how-it-works' | '/security-compliance'
+  fullPaths: '/' | '/how-it-works' | '/pricing' | '/security-compliance'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/how-it-works' | '/security-compliance'
-  id: '__root__' | '/' | '/how-it-works' | '/security-compliance'
+  to: '/' | '/how-it-works' | '/pricing' | '/security-compliance'
+  id: '__root__' | '/' | '/how-it-works' | '/pricing' | '/security-compliance'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   HowItWorksRoute: typeof HowItWorksRoute
+  PricingRoute: typeof PricingRoute
   SecurityComplianceRoute: typeof SecurityComplianceRoute
 }
 
@@ -75,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HowItWorksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/security-compliance': {
       id: '/security-compliance'
       path: '/security-compliance'
@@ -88,6 +105,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   HowItWorksRoute: HowItWorksRoute,
+  PricingRoute: PricingRoute,
   SecurityComplianceRoute: SecurityComplianceRoute,
 }
 export const routeTree = rootRouteImport
