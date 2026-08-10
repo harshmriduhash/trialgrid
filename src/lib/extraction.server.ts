@@ -100,7 +100,17 @@ export async function extractAndClassify(
         return {
           ok: true,
           model: MODEL,
-          lines: classifyAll(parsed.data.procedures, context),
+          lines: classifyAll(
+            parsed.data.procedures.map((p) => ({
+              procedure_name: p.procedure_name,
+              visit_label: p.visit_label ?? null,
+              frequency: p.frequency ?? null,
+              notes: p.notes ?? null,
+              source_excerpt: p.source_excerpt ?? null,
+              source_page: p.source_page ?? null,
+            })),
+            context,
+          ),
         };
       }
     } catch (error) {
