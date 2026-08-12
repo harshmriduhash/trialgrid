@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { Wordmark } from "@/components/SiteChrome";
@@ -8,17 +8,20 @@ export const Route = createFileRoute("/app")({
   head: () => ({
     meta: [
       { title: "Workspace — TrialGrid" },
-      { name: "description", content: "Your TrialGrid workspace: draft, review, and approve clinical trial billing grids." },
+      {
+        name: "description",
+        content: "Your TrialGrid workspace: draft, review, and approve clinical trial billing grids.",
+      },
       { property: "og:title", content: "Workspace — TrialGrid" },
       { property: "og:description", content: "Draft, review, and approve clinical trial billing grids." },
       { name: "robots", content: "noindex" },
     ],
   }),
-  component: Workspace,
+  component: WorkspaceLayout,
 });
 
-function Workspace() {
-  const { loading, user, profile, roles, canApprove, signOut } = useAuth();
+function WorkspaceLayout() {
+  const { loading, user, profile, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,7 +40,34 @@ function Workspace() {
     <div className="min-h-screen bg-secondary">
       <header className="border-b border-border bg-background">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
-          <Wordmark />
+          <div className="flex items-center gap-8">
+            <Wordmark />
+            <nav className="hidden items-center gap-5 text-sm sm:flex">
+              <Link
+                to="/app"
+                activeOptions={{ exact: true }}
+                activeProps={{ className: "text-foreground font-medium" }}
+                className="text-muted-foreground transition-colors hover:text-foreground"
+              >
+                Studies
+              </Link>
+              {isAdmin && (
+                <Link
+                  to="/app/pilot-requests"
+                  activeProps={{ className: "text-foreground font-medium" }}
+                  className="text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  Pilot requests
+                </Link>
+              )}
+              <Link
+                to="/how-it-works"
+                className="text-muted-foreground transition-colors hover:text-foreground"
+              >
+                How it works
+              </Link>
+            </nav>
+          </div>
           <div className="flex items-center gap-4">
             <span className="hidden text-sm text-muted-foreground sm:inline">
               {profile?.full_name ?? user.email}
@@ -49,27 +79,7 @@ function Workspace() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-5 py-12">
-        <h1 className="font-display text-3xl font-semibold tracking-tight">Studies</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Signed in as {profile?.email ?? user.email}
-          {roles.length > 0 && ` · ${roles.join(", ")}`}
-          {canApprove && " · approval rights"}
-        </p>
-
-        <div className="mt-10 rounded-lg border border-dashed border-border bg-background p-12 text-center">
-          <h2 className="font-display text-xl font-semibold tracking-tight">No studies yet</h2>
-          <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-            Upload a protocol to draft your first coverage analysis, or read how the workflow moves a grid from
-            draft to approved.
-          </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Button asChild variant="outline">
-              <Link to="/how-it-works">How it works</Link>
-            </Button>
-          </div>
-        </div>
-      </main>
+      <Outlet />
     </div>
   );
 }
