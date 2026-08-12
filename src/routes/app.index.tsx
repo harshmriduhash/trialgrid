@@ -18,7 +18,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { SAMPLE_PROTOCOL_NUMBER, SAMPLE_PROTOCOL_TITLE } from "@/lib/sample-protocol";
-import { logAudit } from "@/lib/audit";
+import { recordAudit } from "@/lib/audit";
 
 export const Route = createFileRoute("/app/")({
   component: StudiesPage,
@@ -70,11 +70,15 @@ function StudiesPage() {
         .select("id, protocol_number")
         .single();
       if (error) throw error;
-      await logAudit({
-        action: "study.created",
-        entity: "study",
-        entityId: data.id,
-        metadata: { protocol_number: data.protocol_number },
+      await recordAudit({
+        org_id: profile.org_id,
+        actor_id: user?.id ?? "",
+        actor_email: profile.email,
+        event_type: "study.created",
+        entity_type: "study",
+        entity_id: data.id,
+        study_id: data.id,
+        summary: `Created study ${data.protocol_number}`,
       });
       return data;
     },
