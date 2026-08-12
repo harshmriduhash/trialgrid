@@ -17,6 +17,9 @@ import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as RequestDemoRouteImport } from './routes/request-demo'
 import { Route as SecurityComplianceRouteImport } from './routes/security-compliance'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppPilotRequestsRouteImport } from './routes/app.pilot-requests'
+import { Route as AppStudiesIdRouteImport } from './routes/app.studies.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -58,37 +61,60 @@ const SecurityComplianceRoute = SecurityComplianceRouteImport.update({
   path: '/security-compliance',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPilotRequestsRoute = AppPilotRequestsRouteImport.update({
+  id: '/pilot-requests',
+  path: '/pilot-requests',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppStudiesIdRoute = AppStudiesIdRouteImport.update({
+  id: '/studies/$id',
+  path: '/studies/$id',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/app': typeof AppRoute
+  '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/glossary': typeof GlossaryRoute
   '/how-it-works': typeof HowItWorksRoute
   '/pricing': typeof PricingRoute
   '/request-demo': typeof RequestDemoRoute
   '/security-compliance': typeof SecurityComplianceRoute
+  '/app/pilot-requests': typeof AppPilotRequestsRoute
+  '/app/': typeof AppIndexRoute
+  '/app/studies/$id': typeof AppStudiesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/app': typeof AppRoute
   '/auth': typeof AuthRoute
   '/glossary': typeof GlossaryRoute
   '/how-it-works': typeof HowItWorksRoute
   '/pricing': typeof PricingRoute
   '/request-demo': typeof RequestDemoRoute
   '/security-compliance': typeof SecurityComplianceRoute
+  '/app/pilot-requests': typeof AppPilotRequestsRoute
+  '/app': typeof AppIndexRoute
+  '/app/studies/$id': typeof AppStudiesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/app': typeof AppRoute
+  '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/glossary': typeof GlossaryRoute
   '/how-it-works': typeof HowItWorksRoute
   '/pricing': typeof PricingRoute
   '/request-demo': typeof RequestDemoRoute
   '/security-compliance': typeof SecurityComplianceRoute
+  '/app/pilot-requests': typeof AppPilotRequestsRoute
+  '/app/': typeof AppIndexRoute
+  '/app/studies/$id': typeof AppStudiesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,16 +127,21 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/request-demo'
     | '/security-compliance'
+    | '/app/pilot-requests'
+    | '/app/'
+    | '/app/studies/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/app'
     | '/auth'
     | '/glossary'
     | '/how-it-works'
     | '/pricing'
     | '/request-demo'
     | '/security-compliance'
+    | '/app/pilot-requests'
+    | '/app'
+    | '/app/studies/$id'
   id:
     | '__root__'
     | '/'
@@ -121,11 +152,14 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/request-demo'
     | '/security-compliance'
+    | '/app/pilot-requests'
+    | '/app/'
+    | '/app/studies/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AppRoute: typeof AppRoute
+  AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
   GlossaryRoute: typeof GlossaryRoute
   HowItWorksRoute: typeof HowItWorksRoute
@@ -192,12 +226,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SecurityComplianceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/pilot-requests': {
+      id: '/app/pilot-requests'
+      path: '/pilot-requests'
+      fullPath: '/app/pilot-requests'
+      preLoaderRoute: typeof AppPilotRequestsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/studies/$id': {
+      id: '/app/studies/$id'
+      path: '/studies/$id'
+      fullPath: '/app/studies/$id'
+      preLoaderRoute: typeof AppStudiesIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppPilotRequestsRoute: typeof AppPilotRequestsRoute
+  AppIndexRoute: typeof AppIndexRoute
+  AppStudiesIdRoute: typeof AppStudiesIdRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppPilotRequestsRoute: AppPilotRequestsRoute,
+  AppIndexRoute: AppIndexRoute,
+  AppStudiesIdRoute: AppStudiesIdRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AppRoute: AppRoute,
+  AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
   GlossaryRoute: GlossaryRoute,
   HowItWorksRoute: HowItWorksRoute,
