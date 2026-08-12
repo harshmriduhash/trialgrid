@@ -18,6 +18,7 @@ import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as RequestDemoRouteImport } from './routes/request-demo'
 import { Route as SecurityComplianceRouteImport } from './routes/security-compliance'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppStudiesIdRouteImport } from './routes/app.studies.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -64,6 +65,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppStudiesIdRoute = AppStudiesIdRouteImport.update({
+  id: '/studies/$id',
+  path: '/studies/$id',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/request-demo': typeof RequestDemoRoute
   '/security-compliance': typeof SecurityComplianceRoute
   '/app/': typeof AppIndexRoute
+  '/app/studies/$id': typeof AppStudiesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -85,6 +92,7 @@ export interface FileRoutesByTo {
   '/request-demo': typeof RequestDemoRoute
   '/security-compliance': typeof SecurityComplianceRoute
   '/app': typeof AppIndexRoute
+  '/app/studies/$id': typeof AppStudiesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   '/request-demo': typeof RequestDemoRoute
   '/security-compliance': typeof SecurityComplianceRoute
   '/app/': typeof AppIndexRoute
+  '/app/studies/$id': typeof AppStudiesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -110,6 +119,7 @@ export interface FileRouteTypes {
     | '/request-demo'
     | '/security-compliance'
     | '/app/'
+    | '/app/studies/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/request-demo'
     | '/security-compliance'
     | '/app'
+    | '/app/studies/$id'
   id:
     | '__root__'
     | '/'
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/request-demo'
     | '/security-compliance'
     | '/app/'
+    | '/app/studies/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -209,15 +221,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/studies/$id': {
+      id: '/app/studies/$id'
+      path: '/studies/$id'
+      fullPath: '/app/studies/$id'
+      preLoaderRoute: typeof AppStudiesIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
+  AppStudiesIdRoute: typeof AppStudiesIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppIndexRoute: AppIndexRoute,
+  AppStudiesIdRoute: AppStudiesIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

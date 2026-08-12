@@ -221,7 +221,7 @@ function StudyWorkspace() {
       await recordAudit({
         org_id: record.org_id,
         actor_id: user?.id ?? "",
-        actor_email: profile?.email,
+        actor_email: profile?.email ?? null,
         event_type: "grid.drafted",
         entity_type: "grid_version",
         entity_id: version.id,
@@ -255,7 +255,7 @@ function StudyWorkspace() {
       await recordAudit({
         org_id: study.data!.org_id,
         actor_id: user?.id ?? "",
-        actor_email: profile?.email,
+        actor_email: profile?.email ?? null,
         event_type: "grid_line.edited",
         entity_type: "grid_line",
         entity_id: line.id,
@@ -303,7 +303,7 @@ function StudyWorkspace() {
       await recordAudit({
         org_id: study.data!.org_id,
         actor_id: user?.id ?? "",
-        actor_email: profile?.email,
+        actor_email: profile?.email ?? null,
         event_type: next === "approved" ? "grid.approved" : "grid.submitted",
         entity_type: "grid_version",
         entity_id: version.id,
